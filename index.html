@@ -34,18 +34,34 @@ body{font-family:'Yu Gothic UI','Hiragino Kaku Gothic ProN','Meiryo',sans-serif;
   transition:all .15s;white-space:nowrap;}
 .hbtn:hover{background:rgba(255,255,255,.1);color:var(--text);}
 
-/* LAYOUT ：30��ɀ�9ga��bH
-+�XZ[��\�^N�ܚY�ܚY][\]KX��[[�ΌY��Y��Y����\��Y[�ΎZY���[�L�H�\�KZ�JN�ݙ\���ΚY[��B�ʈ9m�b%��&�z`,ze��.�ya�x�k����x��
-��Y�X���\�^N��^ٛ^Y\�X�[ێ���[[��ݙ\���ΚY[��B�ʈ9.+yi+�b%��&�aj8���x���"��n�c,���x�x��8��
-���[�\�X���\�^N�ܚY�ܚY][\]K\���ΌY������\��ݙ\���ΚY[��B�ʈ9c��b%��&�`(��hy.��h!{�"�k���'��x�x�8��x��8���
-���Y�X���\�^N�ܚY�ܚY][\]K\���ΌY��Y����\��ݙ\���ΚY[��B��ʈS�S
-��[�[ؘX��ܛ�[���\�K\[�[
-N؛ܙ\��\��Y�\�KX�ܙ\�N؛ܙ\�\�Y]\Ν�\�K\�N\�^N��^ٛ^Y\�X�[ێ���[[��ݙ\���ΚY[�؛�\�Y�Ν�\�K\�Y��N�B����Y[�ΎL�ٛ۝]�ZY���ٛ۝\�^�N�L\؛ܙ\�X���N�\��Y�\�KX�ܙ\�N\�^N��^�[YۋZ][\Θ�[�\���\��ٛ^\��[�ΌؘX��ܛ�[���ؘJ�MK�MK�MK��N���܎��\�K]^�N�B���]]^���܎��\�KK]^
-N�B���Y�^���܎�ٙ��ٛ۝\�^�N�\ٛ۝]�ZY���؛ܙ\�\�Y]\ΌL�Y[�Ό\��Z[�]�Y�N�^X[Yێ��[�\��B����^ٛ^�N�ݙ\����^N�]]��Y[�΍��B����N�]�X��]\�ܛ��\���Y���B����N��]�X��]\�ܛ��\�][X�ؘX��ܛ�[���\�KX�ܙ\�N؛ܙ\�\�Y]\Ό��B��ʈ9`"�.�������x��8����8��{�&���8�����8��9."��j�`"�.����8����8ऺ(j9�.�ʂ��\��ۘ[X�[��\��\�^N��ۙN�Y[�΍�L�ٛ۝\�^�N�L�ٛ۝]�ZY����ܙ\�X���N����Yٛ^\��[�Ό�[YۋZ][\Θ�[�\��'ip:8px;}
+/* LAYOUT：3列均等 */
+.main{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:8px;
+  height:calc(100vh - var(--hdr));overflow:hidden;}
+/* 左列：1週間以内のタスク */
+.left-col{display:flex;flex-direction:column;overflow:hidden;}
+/* 中央列：全タスク＋登録フォーム */
+.center-col{display:grid;grid-template-rows:1fr 220px;gap:8px;overflow:hidden;}
+/* 右列：連絡事項＋定期スケジュール */
+.right-col{display:grid;grid-template-rows:1fr 1fr;gap:8px;overflow:hidden;}
+
+/* PANEL */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+  display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow);}
+.phdr{padding:8px 12px;font-weight:700;font-size:11px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:6px;flex-shrink:0;background:rgba(255,255,255,.02);color:var(--text2);}
+.phdr-title{color:var(--text);}
+.badge{color:#fff;font-size:9px;font-weight:700;border-radius:10px;padding:1px 6px;min-width:18px;text-align:center;}
+.pbody{flex:1;overflow-y:auto;padding:6px;}
+.pbody::-webkit-scrollbar{width:3px;}
+.pbody::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* 個人ビューモード：ヘッダー下に個人バナーを表示 */
+.personal-banner{display:none;padding:6px 12px;font-size:12px;font-weight:700;
+  border-bottom:2px solid;flex-shrink:0;align-items:center;gap:8px;}
 .personal-banner.show{display:flex;}
 
-/* TASK ItQM */
-.tit{padding:9px 11px;border-radius:7px;margin-bottom:6px;border-left:3px solid var(--border);background:rgba(255,255,255,.02);}
+/* TASK ITEM */
+.ti{padding:9px 11px;border-radius:7px;margin-bottom:6px;border-left:3px solid var(--border);background:rgba(255,255,255,.02);}
 .ti.overdue{border-left-color:var(--danger);background:repeating-linear-gradient(45deg,rgba(255,77,109,.07),rgba(255,77,109,.07) 4px,transparent 4px,transparent 8px);}
 .ti.urgent{border-left-color:var(--danger);background:rgba(255,77,109,.05);}
 .ti.soon{border-left-color:var(--warn);background:rgba(255,140,66,.05);}
@@ -74,13 +90,13 @@ N�B���Y�^���܎�ٙ��ٛ۝\�^�N�\ٛ۝]�ZY���؛ܙ\�\�Y]\ΌL�Y[�Ό\
 .sec-lbl.purple{color:var(--purple);}
 .sec-lbl.teal{color:var(--accent2);}
 .unfinished-bar{font-size:12px;color:var(--text2);padding:4px 8px;margin-bottom:5px;
-  display:flex;\�a:4px;flex-wrap:wrap;align-items:center;
+  display:flex;gap:4px;flex-wrap:wrap;align-items:center;
   background:rgba(255,77,109,.06);border-radius:6px;border:1px solid rgba(255,77,109,.15);}
 .unfinished-tag{padding:1px 6px;border-radius:8px;font-size:11px;font-weight:700;}
 
 /* FORM */
 .ifm{padding:10px;display:flex;flex-direction:column;gap:6px;}
-.irow{display:flex;\�a:6px;align-items:flex-start;}
+.irow{display:flex;gap:6px;align-items:flex-start;}
 input[type=text],input[type=date],input[type=number],input[type=color],select,textarea{
   background:var(--panel2);border:1px solid var(--border);border-radius:6px;
   padding:7px 10px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .15s;width:100%;}
@@ -95,17 +111,18 @@ select option{background:#1a1d27;}
 .btn.gr:hover{background:#00b890;}
 .btn.reg{background:var(--accent);color:#fff;font-size:15px;padding:9px 18px;flex-shrink:0;}
 .btn.da{background:rgba(255,77,109,.15);color:var(--danger);border:1px solid rgba(255,77,109,.3);}
-.btn.da:hover{botdground:rgba(255,77,109,.25);}
-.btn.gh{botdground:transparent;border:1px solid var(--border);color:var(--text2);}
-.btn.gh:hover{background:rgba(255,255,255,.05);color:var(---text);}
-.btn.sm:padding:3px 9px;font-size:12px;}
+.btn.da:hover{background:rgba(255,77,109,.25);}
+.btn.gh{background:transparent;border:1px solid var(--border);color:var(--text2);}
+.btn.gh:hover{background:rgba(255,255,255,.05);color:var(--text);}
+.btn.sm{padding:3px 9px;font-size:12px;}
 .flbl{font-size:12px;color:var(--text3);font-weight:700;margin-bottom:2px;}
 .assign-group{display:flex;gap:4px;flex-wrap:wrap;}
-.achr{blackground:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:5px;
+.achk{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:5px;
   padding:4px 10px;cursor:pointer;font-size:13px;transition:all .15s;user-select:none;color:var(--text2);}
 .achk:hover{border-color:var(--accent);color:var(--accent);}
 .achk.checked{background:rgba(61,127,255,.18);border-color:var(--accent);color:var(--accent);font-weight:700;}
-.achk.all-btn:hover{border-color:var(--accent2);color:var(--accent2);font-weight:700;}
+.achk.all-btn:hover{border-color:var(--accent2);color:var(--accent2);}
+.achk.all-btn.checked{background:rgba(0,200,160,.15);border-color:var(--accent2);color:var(--accent2);font-weight:700;}
 
 /* タスク種別タブ */
 .type-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
@@ -138,159 +155,171 @@ select option{background:#1a1d27;}
   padding:1px 5px;border-radius:6px;white-space:nowrap;}
 
 /* SLIDE PANEL */
-.ovbg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;display:none;bnackdrop-filter:blur(2px);}
+.ovbg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;display:none;backdrop-filter:blur(2px);}
 .ovbg.open{display:block;}
-.sp{{position:fixed;top:var(---hdr);right:-520px;width:460px;height:calc(100vh - var(---hdr));
-   background:var(--panel);border-left:1px solid var(---border);
-   box-shadow:-8px 0 32px rgba(0,0,0,.6);z-index:450;
-   transition:right .25s cubic-bezier(.25,.46,.45,.94);display:flex;flex-direction:column;}
+.sp{position:fixed;top:var(--hdr);right:-520px;width:460px;height:calc(100vh - var(--hdr));
+  background:var(--panel);border-left:1px solid var(--border);
+  box-shadow:-8px 0 32px rgba(0,0,0,.6);z-index:450;
+  transition:right .25s cubic-bezier(.25,.46,.45,.94);display:flex;flex-direction:column;}
 .sp.open{right:0;}
 .sphdr{padding:12px 16px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.02);flex-shrink:0;}
-.sphdr h3{felx:1;font-size:13px;font-weight:700;}
-.spbody{flex:1;overflow-y: !auto;padding:12px;}
-.member-row{display:flex;align-items:center;\�
-10px;padding:10px 12px;border-bottom:1px solid var(--border);}
+.sphdr h3{flex:1;font-size:13px;font-weight:700;}
+.spbody{flex:1;overflow-y:auto;padding:12px;}
+.member-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);}
 .done-toggle{font-size:10px;color:var(--text3);padding:4px 8px;cursor:pointer;
   display:flex;align-items:center;gap:4px;border-top:1px solid var(--border);margin-top:4px;}
 .done-toggle:hover{color:var(--text);}
 .empty{text-align:center;color:var(--text3);font-size:11px;padding:20px 10px;}
 .empty .ei{font-size:24px;margin-bottom:6px;}
 </style>
-$��(��&hes>
-<BUDdy>
-    
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-</body>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo">📦 臨海<span>センター</span></div>
+  <div class="hdr-clock" id="hclock"></div>
+  <div class="hdr-sep"></div>
+  <div class="member-tabs" id="member-tabs"></div>
+  <div class="spacer"></div>
+  <button class="hbtn" onclick="openMemberEdit()">⚙ メンバー編集</button>
+</header>
+
+<!-- 個人ビューバナー（名前押したとき表示） -->
+<div class="personal-banner" id="personal-banner">
+  <span id="banner-name" style="font-size:15px"></span>
+  <span id="banner-sub" style="font-size:10px;opacity:.7"></span>
+  <span style="flex:1"></span>
+  <button class="btn gh sm" onclick="clearPersonal()">✕ 全員に戻す</button>
+</div>
+
+<div class="main">
+  <!-- 左: 1週間以内のタスク -->
+  <div class="left-col">
+    <div class="panel" style="flex:1">
+      <div class="phdr">
+        <span>📌</span><span class="phdr-title">1週間以内のタスク</span>
+        <span class="badge" style="background:var(--warn)" id="today-cnt">0</span>
+        <span style="flex:1"></span>
+        <span id="today-date" style="font-size:9px;color:var(--text3)"></span>
+      </div>
+      <div class="pbody" id="today-list"></div>
+    </div>
+  </div>
+
+  <!-- 中央: 全タスク＋登録 -->
+  <div class="center-col">
+    <div class="panel">
+      <div class="phdr">
+        <span>✅</span><span class="phdr-title" id="tasklist-title">1週間以内のタスク以外</span>
+        <span class="badge" id="all-cnt">0</span>
+        <span style="flex:1"></span>
+        <select id="filter-member" style="width:75px;padding:2px 5px;font-size:10px" onchange="render()"><option value="">全員</option></select>
+        <select id="filter-status" style="width:75px;padding:2px 5px;font-size:10px;margin-left:4px" onchange="render()">
+          <option value="active">未完了</option><option value="all">すべて</option><option value="done">完了済み</option>
+        </select>
+      </div>
+      <div class="pbody" id="task-list"></div>
+    </div>
+    <!-- 登録フォーム -->
+    <div class="panel">
+      <div class="phdr" style="border-bottom-color:rgba(0,200,160,.3)">
+        <span>✏️</span><span class="phdr-title">新規登録</span>
+        <!-- タスク種別タブ -->
+        <div class="type-tabs" style="margin-left:8px">
+          <button class="type-tab act" id="tab-once" onclick="switchTab('once')">通常</button>
+          <button class="type-tab" id="tab-recur" onclick="switchTab('recur')">毎月</button>
+        </div>
+      </div>
+      <div class="ifm">
+        <div class="irow">
+          <input type="text" id="nt" placeholder="タスクタイトル" maxlength="100" autocomplete="off">
+          <button class="btn reg" onclick="addTask()">登録</button>
+        </div>
+        <div class="assign-group" id="assign-group"></div>
+
+        <!-- 通常タスク用 -->
+        <div id="form-once">
+          <div class="irow" style="gap:8px">
+            <div style="flex:1"><div class="flbl">期限</div><input type="date" id="ndate"></div>
+            <div style="flex:1"><div class="flbl">メモ</div><input type="text" id="nmemo" placeholder="任意"></div>
+            <button class="btn gh sm" onclick="clearForm()" style="align-self:flex-end">クリア</button>
+          </div>
+        </div>
+
+        <!-- 毎月タスク用 -->
+        <div id="form-recur" style="display:none">
+          <div class="recur-row">
+            <div class="flbl">🔄 繰り返しパターン</div>
+            <select id="recur-type" onchange="onRecurTypeChg()">
+              <option value="monthstart">月初（1日）</option>
+              <option value="monthend">月末</option>
+              <option value="nth">第◯◯曜日</option>
+              <option value="date">毎月◯日</option>
+            </select>
+            <div id="recur-nth-row" style="display:none;gap:6px;flex-direction:row">
+              <select id="recur-nth" style="flex:1">${[1,2,3,4].map(n=>`<option value="${n}">${n}回目</option>`).join('')}</select>
+              <select id="recur-dow" style="flex:1">${['日','月','火','水','木','金','土'].map((d,i)=>`<option value="${i}">${d}曜日</option>`).join('')}</select>
+            </div>
+            <div id="recur-date-row" style="display:none">
+              <input type="number" id="recur-day" min="1" max="31" placeholder="日（例：15）">
+            </div>
+            <div class="irow">
+              <div style="flex:1"><div class="flbl">メモ</div><input type="text" id="rmemo" placeholder="任意"></div>
+              <button class="btn gh sm" onclick="clearForm()" style="align-self:flex-end">クリア</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右: 連絡事項(上) + 定期スケジュール(下) -->
+  <div class="right-col">
+    <div class="panel">
+      <div class="phdr">
+        <span>📢</span><span class="phdr-title">連絡事項</span>
+        <span class="badge" style="background:var(--warn)" id="notice-cnt">0</span>
+        <span style="flex:1"></span>
+        <button class="btn gh sm" onclick="toggleNoticeForm()" id="notice-form-btn">＋ 投稿</button>
+      </div>
+      <div class="notice-post-box" id="notice-form" style="display:none">
+        <input type="text" id="notice-title" placeholder="タイトル（件名）" style="font-size:11px;padding:4px 8px">
+        <textarea id="notice-body" rows="2" placeholder="内容（任意）" style="resize:none;font-size:11px;padding:4px 8px"></textarea>
+        <div style="display:flex;gap:4px;align-items:center">
+          <select id="notice-from" style="flex:1;font-size:11px;padding:3px 6px"><option value="">投稿者を選択</option></select>
+          <button class="btn gr sm" onclick="addNotice()">投稿</button>
+          <button class="btn gh sm" onclick="toggleNoticeForm()">✕</button>
+        </div>
+      </div>
+      <div class="pbody" id="notice-list"></div>
+    </div>
+    <div class="panel">
+      <div class="phdr">
+        <span>📅</span><span class="phdr-title">定期スケジュール</span>
+        <span class="badge" style="background:var(--purple)" id="sched-cnt">0</span>
+        <span style="flex:1"></span>
+        <button class="btn gh sm" onclick="openSchedEdit()">編集</button>
+      </div>
+      <div class="pbody" id="sched-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="ovbg" id="ovbg" onclick="closeAll()"></div>
+
+<!-- 定期スケジュール編集 -->
+<div class="sp" id="sched-sp">
+  <div class="sphdr"><h3>📅 定期スケジュール編集</h3><button class="btn gh sm" onclick="closeAll()">✕</button></div>
+  <div class="spbody" id="sched-edit-body"></div>
+</div>
+
+<!-- メンバー編集 -->
+<div class="sp" id="member-sp" style="width:380px">
+  <div class="sphdr"><h3>⚙ メンバー編集</h3><button class="btn gh sm" onclick="closeAll()">✕</button></div>
+  <div class="spbody" id="member-edit-body"></div>
+</div>
+
 <script>
 const DAYS=['日','月','火','水','木','金','土'];
 const SCHED_ALERT_DAYS=7;
@@ -316,3 +345,590 @@ function load(){
     }
     if(!S.members||!S.members.length)
       S.members=['茂雄','細見','谷口','和田','澤'].map((n,i)=>({name:n,color:DEFAULT_COLORS[i]}));
+    if(typeof S.members[0]==='string')
+      S.members=S.members.map((n,i)=>({name:n,color:DEFAULT_COLORS[i%DEFAULT_COLORS.length]}));
+    if(!S.tasks) S.tasks=[];
+    if(!S.schedules) S.schedules=[];
+    if(!S.notices) S.notices=[];
+  }catch(e){}
+}
+
+/* ===== HELPERS ===== */
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+function memberNames(){return S.members.map(m=>m.name);}
+function memberColor(name){const m=S.members.find(m=>m.name===name);return m?m.color:'#888';}
+function daysUntil(ds){
+  if(!ds)return null;
+  const t=new Date();t.setHours(0,0,0,0);
+  return Math.floor((new Date(ds+'T00:00:00')-t)/86400000);
+}
+function fmtDate(s){if(!s)return'';const d=new Date(s+'T00:00:00');return`${d.getMonth()+1}/${d.getDate()}`;}
+function dLabel(du){
+  if(du===null)return null;
+  if(du<0)  return{text:`${Math.abs(du)}日超過`,cls:'over'};
+  if(du===0) return{text:'今日',cls:'today'};
+  if(du===1) return{text:'あと1日',cls:'tmrw'};
+  if(du<=3)  return{text:`あと${du}日`,cls:'soon-c'};
+  return      {text:`あと${du}日`,cls:'ok'};
+}
+function taskMembers(t){
+  const all=memberNames();
+  return(t.assignees&&t.assignees.length)?t.assignees.filter(a=>all.includes(a)):all;
+}
+function doneMembers(t){return t.memberDone||[];}
+function isAllDone(t){const ms=taskMembers(t);return ms.length>0&&ms.every(m=>doneMembers(t).includes(m));}
+function tiCls(t){
+  const du=daysUntil(t.dueDate);
+  if(isAllDone(t))return'all-done';
+  if(du===null)return t.recurType?'recurring-ti':'';
+  if(du<0)return'overdue';if(du===0)return'urgent';if(du<=3)return'soon';return'normal-due';
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ===== 毎月タスクの次回日付計算 ===== */
+function recurNextDate(t){
+  const today=new Date();today.setHours(0,0,0,0);
+  const y=today.getFullYear(),m=today.getMonth();
+  function tryM(yr,mo){
+    const last=new Date(yr,mo+1,0).getDate();
+    if(t.recurType==='monthstart')return new Date(yr,mo,1);
+    if(t.recurType==='monthend')return new Date(yr,mo,last);
+    if(t.recurType==='date')return new Date(yr,mo,Math.min(t.recurDay,last));
+    if(t.recurType==='nth'){
+      let cnt=0;
+      for(let d=1;d<=last;d++){const dt=new Date(yr,mo,d);if(dt.getDay()===t.recurDow){cnt++;if(cnt===t.recurNth)return dt;}}
+    }
+    return null;
+  }
+  for(let i=0;i<3;i++){
+    const mo=(m+i)%12,yr=y+Math.floor((m+i)/12);
+    const d=tryM(yr,mo);
+    if(d&&d>=today)return Math.floor((d-today)/86400000);
+  }
+  return null;
+}
+function recurLabel(t){
+  if(t.recurType==='monthstart')return'月初';
+  if(t.recurType==='monthend')return'月末';
+  if(t.recurType==='nth')return`第${t.recurNth}${DAYS[t.recurDow]}曜`;
+  if(t.recurType==='date')return`毎月${t.recurDay}日`;
+  return'毎月';
+}
+
+/* ===== SCHEDULE HELPERS ===== */
+function schedLabel(sc){
+  if(sc.type==='monthstart')return'月初';if(sc.type==='monthend')return'月末';
+  if(sc.type==='nth')return`第${sc.nth}${DAYS[sc.dow]}曜`;if(sc.type==='date')return`毎月${sc.day}日`;return'';
+}
+function schedNext(sc){
+  const today=new Date();today.setHours(0,0,0,0);
+  const y=today.getFullYear(),m=today.getMonth();
+  function tryM(yr,mo){
+    const last=new Date(yr,mo+1,0).getDate();
+    if(sc.type==='monthstart')return new Date(yr,mo,1);if(sc.type==='monthend')return new Date(yr,mo,last);
+    if(sc.type==='date')return new Date(yr,mo,Math.min(sc.day,last));
+    if(sc.type==='nth'){let cnt=0;for(let d=1;d<=last;d++){const dt=new Date(yr,mo,d);if(dt.getDay()===sc.dow){cnt++;if(cnt===sc.nth)return dt;}}}
+    return null;
+  }
+  for(let i=0;i<3;i++){const mo=(m+i)%12,yr=y+Math.floor((m+i)/12);const d=tryM(yr,mo);if(d&&d>=today)return Math.floor((d-today)/86400000);}
+  return null;
+}
+
+/* ===== CLOCK ===== */
+function tickClock(){
+  const d=new Date(),p=n=>String(n).padStart(2,'0');
+  document.getElementById('hclock').textContent=
+    `${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())}（${DAYS[d.getDay()]}） ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+
+/* ===== 担当者タグ ===== */
+function renderAtagBar(t){
+  const ms=taskMembers(t),dm=doneMembers(t);
+  return ms.map(name=>{
+    const isDone=dm.includes(name);
+    const color=memberColor(name);
+    const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
+    if(isDone){
+      const doneAt=fmtDoneAt(t,name);
+      const tip=doneAt?`title="${doneAt}"`:'';
+      return`<span class="atag off" ${tip} style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.3);cursor:pointer" onclick="toggleMemberDone('${t.id}','${esc(name)}')">${esc(name)} ✓${doneAt?` <span style='font-size:10px;opacity:.7'>${doneAt}</span>`:''}</span>`;
+    }
+    return`<span class="atag on" style="background:rgba(${r},${g},${b},.18);border-color:rgba(${r},${g},${b},.7);color:${color}" onclick="toggleMemberDone('${t.id}','${esc(name)}')">${esc(name)}</span>`;
+  }).join('');
+}
+
+/* ===== RENDER TASK ITEM ===== */
+function renderTi(t){
+  const du=t.recurType?recurNextDate(t):daysUntil(t.dueDate);
+  const dl=dLabel(du),cls=tiCls(t),allDone=isAllDone(t);
+  const rl=t.recurType?`<span style="font-size:9px;background:rgba(0,200,160,.12);color:var(--accent2);padding:1px 5px;border-radius:5px">🔄 ${recurLabel(t)}</span>`:'' ;
+  return`<div class="ti ${cls}" id="ti-${t.id}">
+    <div class="t-top" onclick="editTask('${t.id}')">
+      <div class="t-title" style="${allDone?'text-decoration:line-through;opacity:.4':''}">${esc(t.title)}</div>
+      ${dl?`<span class="dbadge ${dl.cls}">${dl.text}</span>`:''}
+      ${t.dueDate&&!t.recurType?`<span style="font-size:10px;color:var(--text3)">${fmtDate(t.dueDate)}</span>`:''}
+      ${rl}
+    </div>
+    ${t.memo?`<div style="font-size:10px;color:var(--text3);margin-bottom:4px">${esc(t.memo)}</div>`:''}
+    <div class="atag-bar">${renderAtagBar(t)}</div>
+  </div>`;
+}
+
+/* ===== TOGGLE MEMBER DONE ===== */
+function toggleMemberDone(tid,member){
+  const t=S.tasks.find(x=>x.id===tid);if(!t)return;
+  if(!t.memberDone)t.memberDone=[];
+  if(!t.memberDoneAt)t.memberDoneAt={};
+  if(t.memberDone.includes(member)){
+    t.memberDone=t.memberDone.filter(m=>m!==member);
+    delete t.memberDoneAt[member];
+    t.completed=false;
+  } else {
+    t.memberDone.push(member);
+    t.memberDoneAt[member]=new Date().toISOString();
+    if(isAllDone(t)){t.completed=true;t.completedAt=new Date().toISOString();}
+  }
+  save();render();
+}
+function fmtDoneAt(t,name){
+  if(!t.memberDoneAt||!t.memberDoneAt[name])return null;
+  const d=new Date(t.memberDoneAt[name]);
+  const p=n=>String(n).padStart(2,'0');
+  return d.getMonth()+1+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes())+'完了';
+}
+
+/* ===== 1週間以内のタスク ===== */
+function renderWeek(){
+  // 通常タスク（7日以内）
+  const tasks=S.tasks.filter(t=>{
+    if(isAllDone(t))return false;
+    if(myMember&&!taskMembers(t).includes(myMember))return false;
+    if(t.recurType){const nd=recurNextDate(t);return nd!==null&&nd<=SCHED_ALERT_DAYS;}
+    const du=daysUntil(t.dueDate);return du!==null&&du<=7;
+  }).sort((a,b)=>{
+    const da=a.recurType?recurNextDate(a):daysUntil(a.dueDate);
+    const db=b.recurType?recurNextDate(b):daysUntil(b.dueDate);
+    return(da??9999)-(db??9999);
+  });
+
+  const scheds=S.schedules.filter(sc=>{const nd=schedNext(sc);return nd!==null&&nd<=SCHED_ALERT_DAYS;})
+    .sort((a,b)=>(schedNext(a)??999)-(schedNext(b)??999));
+
+  const urgent=tasks.filter(t=>{const du=t.recurType?recurNextDate(t):daysUntil(t.dueDate);return(du??99)<=1;});
+  const people=new Set();
+  urgent.forEach(t=>{taskMembers(t).filter(m=>!doneMembers(t).includes(m)).forEach(m=>people.add(m));});
+
+  let html='';
+  if(people.size>0){
+    html+=`<div class="unfinished-bar">🚨 急ぎ未完了：`;
+    people.forEach(name=>{
+      const color=memberColor(name);
+      const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
+      html+=`<span class="unfinished-tag" style="background:rgba(${r},${g},${b},.2);color:${color}">${esc(name)}</span>`;
+    });
+    html+=`</div>`;
+  }
+
+  const over=tasks.filter(t=>{const d=t.recurType?recurNextDate(t):daysUntil(t.dueDate);return(d??0)<0;});
+  if(over.length){html+=`<div class="sec-lbl red">⚠ 期限超過</div>`;over.forEach(t=>{html+=renderTi(t);});}
+  const td=tasks.filter(t=>{const d=t.recurType?recurNextDate(t):daysUntil(t.dueDate);return d===0;});
+  if(td.length){html+=`<div class="sec-lbl red">📍 今日まで</div>`;td.forEach(t=>{html+=renderTi(t);});}
+  const tm=tasks.filter(t=>{const d=t.recurType?recurNextDate(t):daysUntil(t.dueDate);return d===1;});
+  if(tm.length){html+=`<div class="sec-lbl">明日まで</div>`;tm.forEach(t=>{html+=renderTi(t);});}
+  const wk=tasks.filter(t=>{const d=t.recurType?recurNextDate(t):daysUntil(t.dueDate);return d>=2&&d<=7;});
+  if(wk.length){html+=`<div class="sec-lbl">今週中</div>`;wk.forEach(t=>{html+=renderTi(t);});}
+  if(scheds.length){
+    html+=`<div class="sec-lbl purple">📅 今週の定期作業</div>`;
+    scheds.forEach(sc=>{
+      const nd=schedNext(sc),dl=dLabel(nd);
+      html+=`<div class="ti sched-ti"><div class="t-top" style="cursor:default">
+        <div class="t-title">${esc(sc.title)}</div>
+        ${dl?`<span class="dbadge ${dl.cls}">${dl.text}</span>`:''}
+      </div><div style="font-size:10px;color:var(--purple);margin-top:2px">${esc(schedLabel(sc))}</div></div>`;
+    });
+  }
+  if(!html)html=`<div class="empty"><div class="ei">✨</div>今週の期限タスクなし</div>`;
+  document.getElementById('today-list').innerHTML=html;
+  const urgentCnt=over.length+td.length+tm.length;
+  document.getElementById('today-cnt').textContent=urgentCnt;
+  const n=new Date();
+  document.getElementById('today-date').textContent=`${n.getMonth()+1}/${n.getDate()}（${DAYS[n.getDay()]}）`;
+}
+
+/* ===== 全タスク ===== */
+function render(){
+  const fM=document.getElementById('filter-member').value;
+  const fS=document.getElementById('filter-status').value;
+
+  // 個人ビューモードの場合、フィルタに個人名を反映
+  const filterMember=myMember||fM;
+
+  let tasks=[...S.tasks];
+  if(filterMember)tasks=tasks.filter(t=>taskMembers(t).includes(filterMember));
+  if(fS==='active')tasks=tasks.filter(t=>!isAllDone(t));
+  if(fS==='done')tasks=tasks.filter(t=>isAllDone(t));
+  // 個人ビューでない場合は今週以外（8日以降 or 期限なし）のみ表示
+  if(!myMember&&fS!=="done"){
+    tasks=tasks.filter(t=>{
+      if(isAllDone(t))return true;
+      if(t.recurType){const nd=recurNextDate(t);return nd===null||nd>7;}
+      const du=daysUntil(t.dueDate);
+      return du===null||du>7;
+    });
+  }
+  tasks.sort((a,b)=>{
+    const ad=isAllDone(a),bd=isAllDone(b);
+    if(ad!==bd)return ad?1:-1;
+    const da=a.recurType?recurNextDate(a):daysUntil(a.dueDate);
+    const db=b.recurType?recurNextDate(b):daysUntil(b.dueDate);
+    return(da??9999)-(db??9999);
+  });
+  const active=tasks.filter(t=>!isAllDone(t)),done=tasks.filter(t=>isAllDone(t));
+  let html='';
+  if(!active.length&&!done.length){html=`<div class="empty"><div class="ei">📭</div>タスクなし</div>`;}
+  else{
+    active.forEach(t=>{html+=renderTi(t);});
+    if(done.length){
+      html+=`<div class="done-toggle" onclick="toggleDone(this)">▼ 完了済み (${done.length}件)</div>`;
+      html+=`<div class="done-sec" style="display:none">`;done.forEach(t=>{html+=renderTi(t);});html+=`</div>`;
+    }
+  }
+  document.getElementById('task-list').innerHTML=html;
+  document.getElementById('all-cnt').textContent=active.length;
+
+  // タイトル更新
+  document.getElementById('tasklist-title').textContent=myMember?`${myMember}のタスク`:'1週間以内のタスク以外';
+
+  renderWeek();renderSched();renderNoticesDashboard();
+}
+
+function toggleDone(el){
+  const sec=el.nextElementSibling;const open=sec.style.display!=='none';
+  sec.style.display=open?'none':'block';el.textContent=(open?'▼':'▲')+el.textContent.slice(1);
+}
+
+/* ===== 定期スケジュール ===== */
+function renderSched(){
+  const scheds=[...S.schedules].sort((a,b)=>(schedNext(a)??999)-(schedNext(b)??999));
+  let html='';
+  scheds.forEach(sc=>{
+    const nd=schedNext(sc),dl=nd!==null?dLabel(nd):null;
+    html+=`<div class="sched-item"><span class="sched-when">${esc(schedLabel(sc))}</span>
+      <span style="flex:1;font-size:11px">${esc(sc.title)}</span>
+      ${dl?`<span class="dbadge ${dl.cls}" style="font-size:9px">${dl.text}</span>`:''}</div>`;
+  });
+  if(!html)html=`<div class="empty"><div class="ei">📅</div>定期スケジュールなし<br><small>「編集」から追加</small></div>`;
+  document.getElementById('sched-list').innerHTML=html;
+  document.getElementById('sched-cnt').textContent=scheds.length;
+}
+
+/* ===== タスク登録フォーム ===== */
+function switchTab(tab){
+  currentTab=tab;
+  document.getElementById('tab-once').classList.toggle('act',tab==='once');
+  document.getElementById('tab-recur').classList.toggle('act',tab==='recur');
+  document.getElementById('form-once').style.display=tab==='once'?'block':'none';
+  document.getElementById('form-recur').style.display=tab==='recur'?'block':'none';
+}
+
+function onRecurTypeChg(){
+  const type=document.getElementById('recur-type')?.value;
+  const nth=document.getElementById('recur-nth-row');
+  const date=document.getElementById('recur-date-row');
+  if(!nth)return;
+  nth.style.display=type==='nth'?'flex':'none';
+  date.style.display=type==='date'?'block':'none';
+}
+
+function addTask(){
+  const title=document.getElementById('nt').value.trim();
+  if(!title){document.getElementById('nt').focus();return;}
+  const assignees=getCheckedAssignees();
+  const task={id:genId(),title,assignees,memberDone:[],completed:false,createdAt:new Date().toISOString()};
+
+  if(currentTab==='recur'){
+    // 毎月タスク
+    const type=document.getElementById('recur-type').value;
+    task.recurType=type;
+    task.memo=document.getElementById('rmemo').value.trim()||null;
+    if(type==='nth'){task.recurNth=parseInt(document.getElementById('recur-nth').value);task.recurDow=parseInt(document.getElementById('recur-dow').value);}
+    if(type==='date'){task.recurDay=parseInt(document.getElementById('recur-day').value);if(!task.recurDay){alert('日を入力してください');return;}}
+    task.dueDate=null;
+  } else {
+    // 通常タスク
+    task.dueDate=document.getElementById('ndate').value||null;
+    task.memo=document.getElementById('nmemo').value.trim()||null;
+  }
+
+  S.tasks.unshift(task);save();clearForm();render();
+}
+
+function getCheckedAssignees(){
+  const allBtn=document.querySelector('#assign-group .all-btn');
+  if(allBtn&&allBtn.classList.contains('checked'))return[];
+  const res=[];
+  document.querySelectorAll('#assign-group .achk:not(.all-btn)').forEach(el=>{if(el.classList.contains('checked'))res.push(el.dataset.name);});
+  return res;
+}
+
+function clearForm(){
+  document.getElementById('nt').value='';
+  ['ndate','nmemo','rmemo'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('#assign-group .achk').forEach(el=>el.classList.remove('checked'));
+}
+
+function editTask(id){
+  const t=S.tasks.find(t=>t.id===id);if(!t)return;
+  const title=prompt('タスク名を編集',t.title);
+  if(title===null)return;
+  if(!title.trim()){if(confirm('削除しますか？')){S.tasks=S.tasks.filter(x=>x.id!==id);save();render();}return;}
+  t.title=title.trim();
+  if(!t.recurType){const due=prompt('期限（YYYY-MM-DD、空欄でクリア）',t.dueDate||'');if(due!==null)t.dueDate=due.trim()||null;}
+  save();render();
+}
+
+/* ===== メンバー個人ビュー（ヘッダークリック） ===== */
+function setMe(name){
+  if(myMember===name){
+    // 同じ名前をもう一度押したら全員に戻す
+    clearPersonal();return;
+  }
+  myMember=name;
+  buildUI();
+  // バナー表示
+  const color=memberColor(name);
+  const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
+  const banner=document.getElementById('personal-banner');
+  banner.style.background=`rgba(${r},${g},${b},.1)`;
+  banner.style.borderBottomColor=color;
+  banner.classList.add('show');
+  document.getElementById('banner-name').textContent=`👤 ${name} の個人ビュー`;
+  document.getElementById('banner-name').style.color=color;
+
+  // 未完了タスク件数を表示
+  const cnt=S.tasks.filter(t=>!isAllDone(t)&&taskMembers(t).includes(name)).length;
+  document.getElementById('banner-sub').textContent=`未完了 ${cnt} 件`;
+  render();
+}
+
+function clearPersonal(){
+  myMember='';
+  buildUI();
+  document.getElementById('personal-banner').classList.remove('show');
+  render();
+}
+
+function buildUI(){
+  document.getElementById('member-tabs').innerHTML=S.members.map(m=>{
+    const isMe=m.name===myMember;
+    const color=m.color;
+    const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
+    const style=isMe
+      ?`background:rgba(${r},${g},${b},.25);border-color:${color};color:${color};box-shadow:0 0 8px rgba(${r},${g},${b},.4)`
+      :`border-color:rgba(${r},${g},${b},.4);color:rgba(${r},${g},${b},.8)`;
+    return`<button class="mbtn" style="${style}" onclick="setMe('${esc(m.name)}')">${esc(m.name)}</button>`;
+  }).join('');
+
+  const sel=document.getElementById('filter-member');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">全員</option>'+memberNames().map(n=>`<option value="${esc(n)}" ${n===cur?'selected':''}>${esc(n)}</option>`).join('');
+
+  document.getElementById('assign-group').innerHTML=
+    `<span class="achk all-btn" onclick="toggleAll(this)">全員</span>`+
+    memberNames().map(n=>`<span class="achk" data-name="${esc(n)}" onclick="toggleMember(this)">${esc(n)}</span>`).join('');
+
+  const nf=document.getElementById('notice-from');
+  if(nf){
+    nf.innerHTML='<option value="">投稿者を選択</option>'+
+      memberNames().map(n=>`<option value="${esc(n)}" ${n===myMember?'selected':''}>${esc(n)}</option>`).join('');
+  }
+}
+
+function toggleAll(el){document.querySelectorAll('#assign-group .achk').forEach(e=>e.classList.remove('checked'));el.classList.add('checked');}
+function toggleMember(el){document.querySelector('#assign-group .all-btn').classList.remove('checked');el.classList.toggle('checked');}
+
+/* ===== 連絡事項 ===== */
+function toggleNoticeForm(){
+  const form=document.getElementById('notice-form');
+  const btn=document.getElementById('notice-form-btn');
+  const isOpen=form.style.display!=='none';
+  form.style.display=isOpen?'none':'flex';
+  form.style.flexDirection='column';
+  btn.textContent=isOpen?'＋ 投稿':'✕ 閉じる';
+  if(!isOpen){const sel=document.getElementById('notice-from');if(sel&&myMember)sel.value=myMember;document.getElementById('notice-title').focus();}
+}
+function addNotice(){
+  const title=document.getElementById('notice-title').value.trim();
+  const body=document.getElementById('notice-body').value.trim();
+  const from=document.getElementById('notice-from').value;
+  if(!title){alert('タイトルを入力してください');return;}
+  if(!from){alert('投稿者を選択してください');return;}
+  S.notices.unshift({id:genId(),title,body,from,createdAt:new Date().toISOString(),reads:[]});
+  document.getElementById('notice-title').value='';document.getElementById('notice-body').value='';
+  toggleNoticeForm();save();renderNoticesDashboard();
+}
+function renderNoticesDashboard(){
+  const list=document.getElementById('notice-list');
+  document.getElementById('notice-cnt').textContent=S.notices.length;
+  if(!S.notices.length){list.innerHTML=`<div class="empty"><div class="ei">📭</div>連絡事項なし</div>`;return;}
+  list.innerHTML=S.notices.map(n=>{
+    const d=new Date(n.createdAt),p=x=>String(x).padStart(2,'0');
+    const dateStr=`${d.getMonth()+1}/${d.getDate()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    const fromColor=memberColor(n.from);
+    const unreadCnt=memberNames().filter(m=>!n.reads.includes(m)).length;
+    const readBar=S.members.map(m=>{
+      const isRead=n.reads.includes(m.name);
+      const color=m.color;
+      const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
+      const style=isRead?`background:rgba(${r},${g},${b},.15);border-color:rgba(${r},${g},${b},.6);color:${color}`:``;
+      return`<span class="read-tag" style="${style}" onclick="markRead('${n.id}','${esc(m.name)}')">${esc(m.name)}${isRead?' ✓':''}</span>`;
+    }).join('');
+    return`<div class="notice-item">
+      <div class="notice-head">
+        <span class="notice-ttl">${esc(n.title)}</span>
+        <span class="notice-from" style="color:${fromColor}">${esc(n.from)}</span>
+        <span class="notice-date">${dateStr}</span>
+        <button class="btn da sm" style="font-size:9px;padding:1px 5px;margin-left:4px" onclick="delNotice('${n.id}')">削除</button>
+      </div>
+      ${n.body?`<div class="notice-body-txt">${esc(n.body)}</div>`:''}
+      <div style="font-size:9px;margin-bottom:3px">${unreadCnt>0?`<span style="color:var(--danger)">${unreadCnt}人未読</span>`:`<span style="color:var(--accent2)">✓ 全員既読</span>`}</div>
+      <div class="notice-read-bar">${readBar}</div>
+    </div>`;
+  }).join('');
+}
+function markRead(nid,member){const n=S.notices.find(x=>x.id===nid);if(!n)return;if(!n.reads.includes(member))n.reads.push(member);save();renderNoticesDashboard();}
+function delNotice(id){if(!confirm('削除しますか？'))return;S.notices=S.notices.filter(n=>n.id!==id);save();renderNoticesDashboard();}
+
+/* ===== メンバー編集 ===== */
+function openMemberEdit(){
+  renderMemberEdit();
+  document.getElementById('ovbg').classList.add('open');
+  document.getElementById('member-sp').classList.add('open');
+}
+function renderMemberEdit(){
+  document.getElementById('member-edit-body').innerHTML=`
+    <div style="margin-bottom:16px">
+      <div class="flbl" style="margin-bottom:8px">メンバーと個人カラー（${S.members.length}名）</div>
+      ${S.members.map((m,i)=>{
+        const color=m.color;const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
+        return`<div class="member-row">
+          <div style="width:16px;height:16px;border-radius:50%;background:${color};box-shadow:0 0 6px rgba(${r},${g},${b},.5);flex-shrink:0"></div>
+          <span style="flex:1;font-size:13px;font-weight:700">${esc(m.name)}</span>
+          <input type="color" value="${color}" style="width:38px;height:26px;padding:2px;border-radius:4px;cursor:pointer;border:1px solid var(--border);background:none" onchange="changeColor(${i},this.value)">
+          <button class="btn da sm" onclick="delMember(${i})">削除</button>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:12px">
+      <div class="flbl">メンバーを追加</div>
+      <div class="irow" style="margin-top:6px;align-items:center">
+        <input type="text" id="new-member" placeholder="名前を入力" style="flex:1">
+        <input type="color" id="new-color" value="${DEFAULT_COLORS[S.members.length%DEFAULT_COLORS.length]}" style="width:38px;height:30px;padding:2px;border-radius:4px;cursor:pointer;border:1px solid var(--border);background:none;flex-shrink:0">
+        <button class="btn gr sm" style="flex-shrink:0" onclick="addMember()">追加</button>
+      </div>
+    </div>`;
+  document.getElementById('new-member').addEventListener('keydown',e=>{if(e.key==='Enter')addMember();});
+}
+function changeColor(idx,color){S.members[idx].color=color;save();buildUI();renderMemberEdit();render();}
+function addMember(){
+  const name=document.getElementById('new-member').value.trim();
+  const color=document.getElementById('new-color').value;
+  if(!name)return;if(S.members.find(m=>m.name===name)){alert('同じ名前が既にいます');return;}
+  S.members.push({name,color});save();buildUI();renderMemberEdit();
+}
+function delMember(idx){
+  const name=S.members[idx].name;if(!confirm(`「${name}」を削除しますか？`))return;
+  S.members.splice(idx,1);if(myMember===name){myMember='';document.getElementById('personal-banner').classList.remove('show');}
+  save();buildUI();renderMemberEdit();render();
+}
+
+/* ===== 定期スケジュール編集 ===== */
+function openSchedEdit(){
+  renderSchedEdit();
+  document.getElementById('ovbg').classList.add('open');
+  document.getElementById('sched-sp').classList.add('open');
+}
+function renderSchedEdit(){
+  document.getElementById('sched-edit-body').innerHTML=`
+    <div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-weight:700;font-size:12px;color:var(--text)">＋ 新規追加</div>
+      <div><div class="flbl">タイトル</div><input type="text" id="se-title" placeholder="例：月初在庫確認"></div>
+      <div><div class="flbl">繰り返しパターン</div>
+        <select id="se-type" onchange="onTypeChg()">
+          <option value="monthstart">月初（1日）</option><option value="monthend">月末</option>
+          <option value="nth">第◯◯曜日</option><option value="date">毎月◯日</option>
+        </select>
+      </div>
+      <div id="se-nth-row" style="display:none;flex-direction:row;gap:6px">
+        <select id="se-nth" style="flex:1">${[1,2,3,4].map(n=>`<option value="${n}">${n}回目</option>`).join('')}</select>
+        <select id="se-dow" style="flex:1">${DAYS.map((d,i)=>`<option value="${i}">${d}曜日</option>`).join('')}</select>
+      </div>
+      <div id="se-date-row" style="display:none"><input type="number" id="se-day" min="1" max="31" placeholder="日（例：15）"></div>
+      <button class="btn gr sm" style="align-self:flex-start" onclick="addSched()">追加</button>
+    </div>
+    <div style="font-weight:700;font-size:11px;color:var(--text2);margin-bottom:8px">登録済み（${S.schedules.length}件）</div>
+    ${S.schedules.length?S.schedules.map(sc=>{
+      const nd=schedNext(sc),dl=nd!==null?dLabel(nd):null;
+      return`<div class="sched-item" style="margin-bottom:6px">
+        <span class="sched-when">${esc(schedLabel(sc))}</span>
+        <span style="flex:1;font-size:11px">${esc(sc.title)}</span>
+        ${dl?`<span class="dbadge ${dl.cls}" style="font-size:9px">${dl.text}</span>`:''}
+        <button class="btn da sm" style="margin-left:6px;flex-shrink:0" onclick="delSched('${sc.id}')">削除</button>
+      </div>`;
+    }).join(''):`<div class="empty"><div class="ei">📅</div>まだ登録がありません</div>`}`;
+  onTypeChg();
+  const t=document.getElementById('se-title');if(t)t.addEventListener('keydown',e=>{if(e.key==='Enter')addSched();});
+}
+function onTypeChg(){
+  const type=document.getElementById('se-type')?.value;
+  const nth=document.getElementById('se-nth-row');const date=document.getElementById('se-date-row');if(!nth)return;
+  nth.style.display=type==='nth'?'flex':'none';date.style.display=type==='date'?'block':'none';
+}
+function addSched(){
+  const title=document.getElementById('se-title').value.trim();if(!title){alert('タイトルを入力');return;}
+  const type=document.getElementById('se-type').value;const sc={id:genId(),title,type};
+  if(type==='nth'){sc.nth=parseInt(document.getElementById('se-nth').value);sc.dow=parseInt(document.getElementById('se-dow').value);}
+  if(type==='date'){sc.day=parseInt(document.getElementById('se-day').value);if(!sc.day||sc.day<1||sc.day>31){alert('日を入力（1〜31）');return;}}
+  S.schedules.push(sc);save();renderSchedEdit();renderSched();
+}
+function delSched(id){if(!confirm('削除しますか？'))return;S.schedules=S.schedules.filter(s=>s.id!==id);save();renderSchedEdit();renderSched();}
+
+function closeAll(){
+  document.getElementById('ovbg').classList.remove('open');
+  document.querySelectorAll('.sp').forEach(sp=>sp.classList.remove('open'));
+}
+
+/* ===== INIT ===== */
+function init(){
+  load();buildUI();
+  if(S.tasks.length===0&&S.schedules.length===0){
+    const today=new Date();
+    function ad(n){const d=new Date(today);d.setDate(d.getDate()+n);return d.toISOString().split('T')[0];}
+    S.tasks=[
+      {id:genId(),title:'月次在庫報告書の提出',assignees:['茂雄'],dueDate:ad(0),memo:'経理へ提出',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+      {id:genId(),title:'安全点検チェックリスト記入',assignees:['細見','和田'],dueDate:ad(1),memo:'',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+      {id:genId(),title:'フォークリフト月次点検',assignees:['谷口'],dueDate:ad(3),memo:'',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+      {id:genId(),title:'出荷ミス再発防止策の確認',assignees:[],dueDate:ad(5),memo:'全員で確認',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+      {id:genId(),title:'月末報告書作成',assignees:['茂雄'],recurType:'monthend',memo:'毎月末',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+      {id:genId(),title:'在庫棚卸',assignees:[],recurType:'date',recurDay:15,memo:'毎月15日',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+    ];
+    S.schedules=[
+      {id:genId(),title:'月初在庫確認',type:'monthstart'},
+      {id:genId(),title:'月末締め作業',type:'monthend'},
+      {id:genId(),title:'安全ミーティング',type:'nth',nth:2,dow:2},
+      {id:genId(),title:'請求書確認',type:'date',day:15},
+    ];
+    S.notices=[
+      {id:genId(),title:'木曜出荷集中について',body:'今週の出荷は木曜が集中しています。水曜午後から準備を早めてください。',from:'茂雄',createdAt:new Date().toISOString(),reads:[]},
+    ];
+    save();
+  }
+  render();tickClock();
+  setInterval(tickClock,1000);setInterval(render,60000);
+  document.getElementById('nt').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
+  onRecurTypeChg();
+}
+init();
+</script>
+</body>
+</html>

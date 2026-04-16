@@ -320,6 +320,8 @@ select option{background:#1a1d27;}
   <div class="spbody" id="member-edit-body"></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
 const DAYS=['日','月','火','水','木','金','土'];
 const SCHED_ALERT_DAYS=7;
@@ -329,28 +331,62 @@ let S={tasks:[],schedules:[],notices:[],members:[]};
 let myMember=''; // 現在選択中のメンバー（空=全員表示）
 let currentTab='once';
 
+/* ===== FIREBASE ===== */
+const firebaseConfig = {
+  apiKey: "AIzaSyDElpavgQJgnCx8CQVYGRbKfdIazfW8nHQ",
+  authDomain: "today-todo-83bb8.firebaseapp.com",
+  databaseURL: "https://today-todo-83bb8-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "today-todo-83bb8",
+  storageBucket: "today-todo-83bb8.firebasestorage.app",
+  messagingSenderId: "622981132173",
+  appId: "1:622981132173:web:2cfb54c58614e156b1d7c4",
+  measurementId: "G-NGBM3WBQMV"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const dataRef = db.ref('rinkai-v5');
+
 /* ===== STORAGE ===== */
-function save(){localStorage.setItem('rinkai-v5',JSON.stringify(S));}
+function save(){
+  dataRef.set(JSON.parse(JSON.stringify(S)));
+}
 function load(){
-  try{
-    const r=localStorage.getItem('rinkai-v5');
-    // v4からのマイグレーション
-    const old=localStorage.getItem('rinkai-v4');
-    if(r) S=JSON.parse(r);
-    else if(old){
-      const o=JSON.parse(old);
-      S.tasks=o.tasks||[];S.schedules=o.schedules||[];S.notices=o.notices||[];
-      if(o.members&&typeof o.members[0]==='object') S.members=o.members;
-      else if(o.members) S.members=o.members.map((n,i)=>({name:n,color:DEFAULT_COLORS[i%DEFAULT_COLORS.length]}));
+  dataRef.on('value', (snapshot) => {
+    const data = snapshot.val();
+    if(data){
+      S = data;
+      if(!S.members||!S.members.length)
+        S.members=['茂雄','細見','谷口','和田','澤'].map((n,i)=>({name:n,color:DEFAULT_COLORS[i]}));
+      if(typeof S.members[0]==='string')
+        S.members=S.members.map((n,i)=>({name:n,color:DEFAULT_COLORS[i%DEFAULT_COLORS.length]}));
+      if(!S.tasks) S.tasks=[];
+      if(!S.schedules) S.schedules=[];
+      if(!S.notices) S.notices=[];
+    } else {
+      const today=new Date();
+      function ad(n){const d=new Date(today);d.setDate(d.getDate()+n);return d.toISOString().split('T')[0];}
+      S.tasks=[
+        {id:genId(),title:'月次在庫報告書の提出',assignees:['茂雄'],dueDate:ad(0),memo:'経理へ提出',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+        {id:genId(),title:'安全点検チェックリスト記入',assignees:['細見','和田'],dueDate:ad(1),memo:'',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+        {id:genId(),title:'フォークリフト月次点検',assignees:['谷口'],dueDate:ad(3),memo:'',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+        {id:genId(),title:'出荷ミス再発防止策の確認',assignees:[],dueDate:ad(5),memo:'全員で確認',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+        {id:genId(),title:'月末報告書作成',assignees:['茂雄'],recurType:'monthend',memo:'毎月末',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+        {id:genId(),title:'在庫棚卸',assignees:[],recurType:'date',recurDay:15,memo:'毎月15日',memberDone:[],completed:false,createdAt:new Date().toISOString()},
+      ];
+      S.schedules=[
+        {id:genId(),title:'月初在庫確認',type:'monthstart'},
+        {id:genId(),title:'月末締め作業',type:'monthend'},
+        {id:genId(),title:'安全ミーティング',type:'nth',nth:2,dow:2},
+        {id:genId(),title:'請求書確認',type:'date',day:15},
+      ];
+      S.notices=[
+        {id:genId(),title:'木曜出荷集中について',body:'今週の出荷は木曜が集中しています。水曜午後から準備を早めてください。',from:'茂雄',createdAt:new Date().toISOString(),reads:[]},
+      ];
+      save();
     }
-    if(!S.members||!S.members.length)
-      S.members=['茂雄','細見','谷口','和田','澤'].map((n,i)=>({name:n,color:DEFAULT_COLORS[i]}));
-    if(typeof S.members[0]==='string')
-      S.members=S.members.map((n,i)=>({name:n,color:DEFAULT_COLORS[i%DEFAULT_COLORS.length]}));
-    if(!S.tasks) S.tasks=[];
-    if(!S.schedules) S.schedules=[];
-    if(!S.notices) S.notices=[];
-  }catch(e){}
+    buildUI();
+    render();
+  });
 }
 
 /* ===== HELPERS ===== */
@@ -900,30 +936,8 @@ function closeAll(){
 
 /* ===== INIT ===== */
 function init(){
-  load();buildUI();
-  if(S.tasks.length===0&&S.schedules.length===0){
-    const today=new Date();
-    function ad(n){const d=new Date(today);d.setDate(d.getDate()+n);return d.toISOString().split('T')[0];}
-    S.tasks=[
-      {id:genId(),title:'月次在庫報告書の提出',assignees:['茂雄'],dueDate:ad(0),memo:'経理へ提出',memberDone:[],completed:false,createdAt:new Date().toISOString()},
-      {id:genId(),title:'安全点検チェックリスト記入',assignees:['細見','和田'],dueDate:ad(1),memo:'',memberDone:[],completed:false,createdAt:new Date().toISOString()},
-      {id:genId(),title:'フォークリフト月次点検',assignees:['谷口'],dueDate:ad(3),memo:'',memberDone:[],completed:false,createdAt:new Date().toISOString()},
-      {id:genId(),title:'出荷ミス再発防止策の確認',assignees:[],dueDate:ad(5),memo:'全員で確認',memberDone:[],completed:false,createdAt:new Date().toISOString()},
-      {id:genId(),title:'月末報告書作成',assignees:['茂雄'],recurType:'monthend',memo:'毎月末',memberDone:[],completed:false,createdAt:new Date().toISOString()},
-      {id:genId(),title:'在庫棚卸',assignees:[],recurType:'date',recurDay:15,memo:'毎月15日',memberDone:[],completed:false,createdAt:new Date().toISOString()},
-    ];
-    S.schedules=[
-      {id:genId(),title:'月初在庫確認',type:'monthstart'},
-      {id:genId(),title:'月末締め作業',type:'monthend'},
-      {id:genId(),title:'安全ミーティング',type:'nth',nth:2,dow:2},
-      {id:genId(),title:'請求書確認',type:'date',day:15},
-    ];
-    S.notices=[
-      {id:genId(),title:'木曜出荷集中について',body:'今週の出荷は木曜が集中しています。水曜午後から準備を早めてください。',from:'茂雄',createdAt:new Date().toISOString(),reads:[]},
-    ];
-    save();
-  }
-  render();tickClock();
+  load(); // Firebaseリスナー起動（データ取得後にbuildUI+renderが呼ばれる）
+  tickClock();
   setInterval(tickClock,1000);setInterval(render,60000);
   document.getElementById('nt').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
   onRecurTypeChg();

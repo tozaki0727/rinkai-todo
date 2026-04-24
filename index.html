@@ -322,6 +322,7 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:poin
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script>
 const DAYS=['日','月','火','水','木','金','土'];
 const SCHED_ALERT_DAYS=7;
@@ -936,11 +937,15 @@ function closeAll(){
 
 /* ===== INIT ===== */
 function init(){
-  load(); // Firebaseリスナー起動（データ取得後にbuildUI+renderが呼ばれる）
   tickClock();
   setInterval(tickClock,1000);setInterval(render,60000);
   document.getElementById('nt').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
   onRecurTypeChg();
+  firebase.auth().signInAnonymously().then(()=>{
+    load();
+  }).catch((err)=>{
+    document.body.innerHTML='<div style="padding:40px;color:#e8eaf2;font-family:sans-serif;background:#0f1117;min-height:100vh;"><h2>接続エラー</h2><p>Firebase認証に失敗しました。ページを再読み込みしてください。</p><p style="color:#8b92b8;font-size:12px;margin-top:12px;">'+err.message+'</p></div>';
+  });
 }
 init();
 </script>

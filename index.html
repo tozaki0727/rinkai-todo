@@ -345,7 +345,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const dataRef = db.ref('rinkai-v5');
+const SECRET = '9ca44658bdb44610048298b7315c38a0'; const dataRef = db.ref('rinkai-v5/' + SECRET);
 
 /* ===== STORAGE ===== */
 function save(){
